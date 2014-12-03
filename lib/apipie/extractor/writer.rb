@@ -72,10 +72,12 @@ module Apipie
         "#{description[:controller].name}##{description[:action]}"
       end
 
+      ACCEPTABLE_KEYS = %w[verb path versions query request_data response_data
+                           code show_in_doc recorded rspec_location]
       def ordered_call(call)
         call = call.stringify_keys
         ordered_call = OrderedHash.new
-        %w[verb path versions query request_data response_data code show_in_doc recorded].each do |k|
+        ACCEPTABLE_KEYS.each do |k|
           next unless call.has_key?(k)
           ordered_call[k] = case call[k]
                        when ActiveSupport::HashWithIndifferentAccess

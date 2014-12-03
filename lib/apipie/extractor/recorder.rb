@@ -99,7 +99,7 @@ module Apipie
 
       def record
         if @controller
-          {:controller => @controller,
+          rec = {:controller => @controller,
            :action => @action,
            :verb => @verb,
            :path => @path,
@@ -108,6 +108,11 @@ module Apipie
            :request_data => @request_data,
            :response_data => @response_data,
            :code => @code}
+          if defined? RSpec && RSpec.current_example
+            # track which test produced this example
+            rec[:rspec_location] = RSpec.current_example.metadata[:location]
+          end
+          rec
         else
           nil
         end
